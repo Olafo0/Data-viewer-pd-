@@ -1,4 +1,15 @@
+from re import L
 import pandas as pd 
+
+
+def mainmenu():
+    print("Welcome to the dashbaord")
+    print("1) All data") 
+    print("2) Specific Date range")
+    print("3) Specific Car brand")
+    print("4) Specifc Car model")
+
+    return int(input("Enter (1-3) :"))
 
 def get_start_date():
     Flag = True 
@@ -33,7 +44,20 @@ def get_end_date():
                 return end_date
 
 
-def main():
+def all_date():
+    df = pd.read_csv("CarsSold.csv")
+    df["Date Bought"] = pd.to_datetime(df["Date Bought"],dayfirst=True)
+    df = df.sort_values(by="Date Bought")
+    print("\n\n\n\n\n\n")
+    print(df)
+
+
+
+def specific_date_range():
+    start_date = get_start_date()
+    end_date = get_end_date()
+
+
     print("- - - - DATA VIEWER 0.01V - - - -\n")
 
     df = pd.read_csv("CarsSold.csv")
@@ -44,12 +68,47 @@ def main():
     df_2 = df.loc[viewer]
     print(df_2)
 
+def specific_car_brand():
+    brand_input = str(input("Please enter what car brand you want to view? :")).upper()
+
+    df = pd.read_csv("CarsSold.csv")
+    df["Date Bought"] = pd.to_datetime(df["Date Bought"],dayfirst=True)
+    df = df.sort_values(by="Date Bought")
+    df2 = df.where(df["Car brand"] == brand_input)
+    df2.dropna(inplace=True)
+    print(df2)
+
+def specific_car_model():
+    carmodel_input = str(input("Please enter what car model you want to veiw? :")).upper()
+
+    df = pd.read_csv("CarsSold.csv")
+    df["Date Bought"] = pd.to_datetime(df["Date Bought"],dayfirst=True)
+    df = df.sort_values(by="Date Bought")
+    df2 = df.where(df["MODEL"] == carmodel_input)
+    df2.dropna(inplace=True)
+    print(df2)
+
+
+
+def selection():
+    if x == 1:
+        all_date()
+    elif x == 2: 
+        specific_date_range()
+    elif x == 3:
+        specific_car_brand()
+    elif x == 4:
+        specific_car_model()
 
 
 
 
 
 
-start_date = get_start_date()
-end_date = get_end_date()
-main()
+
+
+x = mainmenu()
+selection()
+
+
+
